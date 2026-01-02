@@ -1,0 +1,97 @@
+.preloader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fdfaf5; /* Ваш фірмовий фон */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  font-family: 'Inter', sans-serif;
+}
+
+.loader-content {
+  text-align: center;
+}
+
+.loader-title {
+  color: #5d4037;
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+.loader-subtitle {
+  color: #FF8C00;
+  font-weight: 600;
+  margin-bottom: 50px;
+}
+
+/* КОНТЕЙНЕР ТОРТА */
+.cake-container {
+  position: relative;
+  width: 200px;
+  height: 250px;
+  margin: 0 auto;
+}
+
+.cake-layer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 10px;
+}
+
+.cake-layer.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.layer-1 { width: 180px; height: 40px; background: #8d6e63; bottom: 0; z-index: 1; }
+.layer-2 { width: 140px; height: 35px; background: #a1887f; bottom: 40px; z-index: 2; }
+.layer-3 { width: 100px; height: 30px; background: #d7ccc8; bottom: 75px; z-index: 3; }
+
+.cake-cream {
+  position: absolute;
+  width: 100px;
+  height: 15px;
+  background: #fff;
+  border-radius: 20px;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  opacity: 0;
+  transition: 0.5s ease-out;
+  z-index: 4;
+}
+
+.cake-cream.show { transform: translateX(-50%) scale(1); opacity: 1; }
+
+.cake-cherry {
+  position: absolute;
+  bottom: 115px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  font-size: 2rem;
+  opacity: 0;
+  transition: 0.5s ease;
+  z-index: 5;
+}
+
+.cake-cherry.show { transform: translateX(-50%) scale(1.2); opacity: 1; }
+
+/* АНІМАЦІЯ ТЕКСТУ */
+.animate-text {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}

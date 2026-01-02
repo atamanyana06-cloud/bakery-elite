@@ -1,0 +1,107 @@
+/* 1. Основний контейнер */
+.header-container {
+  width: 100vw;
+  background-color: #FEF9F0; 
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  margin-bottom: 0px;
+  border-bottom: 2px solid #FF8C00;
+}
+
+/* Навігаційна панель */
+.header-nav {
+  display: flex;
+  align-items: flex-end; 
+  justify-content: center;
+  width: 100%;
+  height: 90px; 
+  position: relative;
+  padding-bottom: 15px; 
+}
+
+/* Групи меню */
+.nav-group {
+  display: flex;
+  list-style: none;
+  gap: 40px;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+.nav-group:first-child {
+  justify-content: flex-end;
+  margin-right: 140px; 
+}
+
+.nav-group:last-child {
+  justify-content: flex-start;
+  margin-left: 140px; 
+}
+
+/* Логотип по центру */
+.header-logo {
+  position: absolute;
+  left: 50%;
+  top: 0; 
+  transform: translateX(-50%); 
+  z-index: 600;
+}
+
+.logo-badge {
+  background-color: #ffffff;
+  border: 3px solid #5d4037; /* Трохи тонша лінія для елегантності */
+  width: 180px; /* Трохи збільшили коло, щоб вмістити великий круасан */
+  height: 180px;
+  border-radius: 50%; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 25px rgba(93, 64, 55, 0.15);
+  transform: translateY(18px); 
+  transition: transform 0.3s ease;
+}
+
+/* Стиль для круасана (іконки/емодзі) */
+.logo-emoji {
+  font-size: 3rem; /* Значно збільшений круасан 🥐 */
+  line-height: 1;
+  margin-bottom: 5px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.logo-title {
+  /* Змінюємо шрифт на більш преміальний Serif (із засічками) */
+  font-family: 'Playfair Display', 'Georgia', serif;
+  color: #5d4037;
+  font-size: 1.3rem; /* Трохи більший розмір */
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.1;
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 1px; /* Додаємо простір між літерами */
+}
+
+/* Посилання в меню */
+.nav-link a {
+  text-decoration: none;
+  color: #5d4037;
+  font-weight: 800;
+  font-family: 'Arial Black', sans-serif; 
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  padding-bottom: 5px;
+}
+
+.nav-link a:hover {
+  color: #FF8C00;
+}
+
+.nav-link a.active {
+  color: #5d4037;
+  border-bottom: 4px solid #FF8C00;
+}

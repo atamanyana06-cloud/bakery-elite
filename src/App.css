@@ -1,0 +1,221 @@
+/* 1. Глобальне скидання 🧹 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 2. Налаштування тіла сторінки 📄 */
+body, html {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Захист від горизонтальної прокрутки */
+}
+
+/* 3. Головний контейнер React (саме тут була помилка!) 🏗️ */
+#root {
+  width: 100%;
+  max-width: none; /* Прибираємо обмеження 1280px */
+  margin: 0;       /* Прибираємо авто-центрування */
+  padding: 0;      /* Прибираємо 2rem, які робили білі смуги */
+  text-align: center;
+}
+.content {
+  min-height: calc(100vh - 400px); /* Гарантує, що футер буде внизу навіть на коротких сторінках */
+  padding-bottom: 50px;
+}
+.catalog-cta {
+  padding: 100px 20px;
+  background-color: #ffffff; /* Чистий білий фон для контрасту */
+  text-align: center;
+  width: 100%;
+}
+
+.cta-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cta-subtitle {
+  color: #FF8C00; /* Фірмовий помаранчевий */
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.cta-title {
+  font-size: 3rem;
+  color: #5d4037; /* Темно-коричневий */
+  font-weight: 900;
+  margin-bottom: 25px;
+}
+
+.cta-text {
+  font-size: 1.2rem;
+  color: #8e7d71;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.cta-button {
+  display: inline-block;
+  background-color: #FF8C00;
+  color: white;
+  padding: 20px 50px;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 15px 35px rgba(255, 140, 0, 0.3); /* Ефект тіні як у кнопок профілю */
+  transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cta-button:hover {
+  transform: translateY(-5px) scale(1.05);
+  background-color: #e67e00;
+  box-shadow: 0 20px 45px rgba(255, 140, 0, 0.4);
+}
+
+/* --- ГРАНДІОЗНА ІСТОРІЯ --- */
+.grand-history {
+  padding: 120px 0;
+  background: #fdfaf5; /* Фірмовий фон */
+  overflow: hidden;
+}
+
+.history-header {
+  text-align: center;
+  margin-bottom: 100px;
+}
+
+.history-header .subtitle {
+  color: #FF8C00;
+  font-weight: 800;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.history-header .main-title {
+  font-size: 4rem; /* Збільшений масштаб */
+  color: #5d4037;
+  font-weight: 900;
+  margin-top: 15px;
+}
+
+/* Конструкція таймлайну */
+.grand-timeline {
+  max-width: 1300px;
+  margin: 0 auto;
+  position: relative;
+  padding: 50px 0;
+}
+
+.vertical-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 140, 0, 0.2);
+  transform: translateX(-50%);
+}
+
+.history-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 150px; /* Великий відступ для масштабу */
+  width: 100%;
+  position: relative;
+}
+
+.history-row.right { flex-direction: row-reverse; }
+
+/* Блок з фото */
+.history-image-box {
+  width: 45%;
+  position: relative;
+  border-radius: 40px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(93, 64, 55, 0.15);
+}
+
+.history-image-box img {
+  width: 100%;
+  height: 450px; /* Масштабні фото */
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.history-image-box:hover img { transform: scale(1.05); }
+
+.year-badge {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  background: #FF8C00; /* */
+  color: white;
+  padding: 10px 25px;
+  border-radius: 50px;
+  font-size: 1.5rem;
+  font-weight: 900;
+  box-shadow: 0 10px 20px rgba(255, 140, 0, 0.3);
+}
+
+.history-row.right .year-badge { right: auto; left: 30px; }
+
+/* Блок з текстом */
+.history-content-box {
+  width: 45%;
+  padding: 0 40px;
+  position: relative;
+}
+
+.node-marker {
+  position: absolute;
+  top: 20px;
+  width: 24px;
+  height: 24px;
+  background: #fdfaf5;
+  border: 5px solid #FF8C00;
+  border-radius: 50%;
+  z-index: 5;
+}
+
+.history-row.left .node-marker { right: -53px; }
+.history-row.right .node-marker { left: -53px; }
+
+.history-content-box h3 {
+  font-size: 2.2rem;
+  color: #5d4037;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+
+.history-content-box p {
+  font-size: 1.2rem;
+  color: #8e7d71;
+  line-height: 1.8;
+}
+
+/* Мобільна адаптація */
+@media (max-width: 1024px) {
+  .vertical-line { left: 40px; }
+  .history-row, .history-row.right { flex-direction: column; align-items: flex-start; margin-bottom: 80px; }
+  .history-image-box, .history-content-box { width: 90%; margin-left: 80px; }
+  .history-content-box { padding: 30px 0; }
+  .node-marker { left: -51px !important; }
+}
+
+.event-node:hover .dot-inner {
+  transform: scale(1.4);
+}
+/* Решта ваших стилів для карток та логотипів (можна залишити без змін) */
+.card {
+  padding: 2em;
+}

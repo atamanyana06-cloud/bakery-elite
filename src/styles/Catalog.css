@@ -1,0 +1,236 @@
+/* --- 1. ОСНОВНИЙ ФОН ТА КОНТЕЙНЕР --- */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #FEF9F0;
+  overflow-x: hidden;
+  font-family: 'Lato', sans-serif; /* Основний текст */
+}
+
+.catalog-container {
+  width: 100%;
+  max-width: 1200px; /* Центруємо контент для кращого вигляду на широких екранах */
+  margin: 180px auto 0; 
+  padding: 40px 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* --- 2. ЗАГОЛОВОК ТА ШЕПКА КАТАЛОГУ --- */
+.catalog-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.catalog-subtitle {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #FF8C00;
+  font-weight: 700;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+}
+
+.catalog-title {
+  color: #5d4037;
+  font-family: 'Montserrat', sans-serif; /* Заголовки Elite */
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.title-underline {
+  width: 60px;
+  height: 4px;
+  background: #FF8C00;
+  margin: 15px auto 0;
+  border-radius: 2px;
+}
+
+/* --- 3. ФІЛЬТРАЦІЯ --- */
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+}
+
+.filter-buttons button {
+  padding: 12px 28px;
+  border: 1px solid #e8e2d9;
+  background: white;
+  color: #7d6e66;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 10px rgba(93, 64, 55, 0.03);
+}
+
+.filter-buttons button:hover {
+  border-color: #FF8C00;
+  color: #FF8C00;
+  transform: translateY(-2px);
+}
+
+.filter-buttons button.active-filter {
+  background: #FF8C00;
+  color: white;
+  border-color: #FF8C00;
+  box-shadow: 0 8px 20px rgba(255, 140, 0, 0.25);
+}
+
+/* --- 4. СІТКА ТОВАРІВ --- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 40px;
+  padding-bottom: 100px;
+}
+
+/* --- 5. КАРТКА ТОВАРУ --- */
+.product-card {
+  background: white;
+  border-radius: 25px;
+  overflow: hidden; /* Щоб картинка не виходила за закруглені краї */
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #f2ede9;
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.product-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 20px 40px rgba(93, 64, 55, 0.08);
+}
+
+/* Контейнер для зображення */
+.product-image-wrapper {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.product-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.product-card:hover img {
+  transform: scale(1.1);
+}
+
+/* Тег категорії на фото */
+.category-tag {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #5d4037;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+  z-index: 2;
+}
+
+/* Блок з інформацією */
+.product-info {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.product-card h3 {
+  color: #5d4037;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin: 0 0 10px 0;
+}
+
+/* ОПИС ДЕСЕРТУ */
+.product-card .description {
+  color: #8e7d71;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  flex-grow: 1; /* Опис займає вільний простір */
+}
+
+/* Футер картки (Ціна + Кнопка) */
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  border-top: 1px solid #fcfaf8;
+}
+
+.product-card .price {
+  color: #FF8C00;
+  font-weight: 900;
+  font-size: 1.3rem;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Кнопка "У кошик" */
+.add-to-cart-btn {
+  background: #5d4037;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-to-cart-btn:hover {
+  background: #FF8C00;
+  box-shadow: 0 5px 15px rgba(255, 140, 0, 0.3);
+}
+
+/* --- 6. ДОДАТКОВІ СТАНИ --- */
+.loading-state, .empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 100px 0;
+  color: #8e7d71;
+  font-weight: 600;
+}
+
+.animate-fade {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 7. АДАПТИВНІСТЬ --- */
+@media (max-width: 768px) {
+  .catalog-container {
+    margin-top: 110px;
+  }
+  .catalog-title {
+    font-size: 2rem;
+  }
+  .product-grid {
+    gap: 20px;
+  }
+}
