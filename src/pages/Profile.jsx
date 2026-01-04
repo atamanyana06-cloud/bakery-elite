@@ -33,7 +33,6 @@ const Profile = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [authError, setAuthError] = useState('');
 
-  // Поля профілю відповідно до ваших налаштувань
   const [profileData, setProfileData] = useState({
     phone: '',
     gender: '',
@@ -62,23 +61,42 @@ const Profile = () => {
     return () => unsubscribe();
   }, []);
 
+  // ОНОВЛЕНО: Функція завантаження всіх типів замовлень
   const fetchUserOrders = async (uid) => {
     setOrdersLoading(true);
     try {
-      const q = query(collection(db, "custom_orders"), where("userId", "==", uid));
-      const querySnapshot = await getDocs(q);
-      const ordersList = querySnapshot.docs.map(doc => ({
+      // 1. Завантаження індивідуальних тортів
+      const qCustom = query(collection(db, "custom_orders"), where("userId", "==", uid));
+      const customSnap = await getDocs(qCustom);
+      const customList = customSnap.docs.map(doc => ({
         id: doc.id,
+        type: 'custom',
         ...doc.data()
       }));
-      setOrders(ordersList);
+
+      // 2. Завантаження загальних замовлень з каталогу
+      const qGeneral = query(collection(db, "orders"), where("userId", "==", uid));
+      const generalSnap = await getDocs(qGeneral);
+      const generalList = generalSnap.docs.map(doc => ({
+        id: doc.id,
+        type: 'catalog',
+        ...doc.data()
+      }));
+
+      // Об'єднання та сортування за датою (спочатку нові)
+      const allOrders = [...customList, ...generalList].sort((a, b) => {
+        const dateA = new Date(a.createdAt || a.details?.deliveryDate || 0);
+        const dateB = new Date(b.createdAt || b.details?.deliveryDate || 0);
+        return dateB - dateA;
+      });
+
+      setOrders(allOrders);
     } catch (err) {
       console.error("Помилка завантаження замовлень:", err);
     }
     setOrdersLoading(false);
   };
 
-  // Перевірка 48 годин для скасування
   const canCancel = (deliveryDate) => {
     if (!deliveryDate) return false;
     const now = new Date();
@@ -87,7 +105,7 @@ const Profile = () => {
     return diffInHours > 48;
   };
 
-  const handleCancelOrder = async (orderId, deliveryDate) => {
+  const handleCancelOrder = async (orderId, deliveryDate, collectionName = "custom_orders") => {
     if (!canCancel(deliveryDate)) {
       alert("На жаль, замовлення вже неможливо скасувати (до дати менше 48 годин).");
       return;
@@ -97,7 +115,7 @@ const Profile = () => {
     if (!reason) return;
 
     try {
-      const orderRef = doc(db, "custom_orders", orderId);
+      const orderRef = doc(db, collectionName, orderId);
       await updateDoc(orderRef, {
         status: 'cancelled',
         cancelReason: reason,
@@ -160,24 +178,28 @@ const Profile = () => {
 
   if (!user) {
     return (
-      <div className="p-wrapper">
+      <div className="p-wrapper auth-page">
         <div className="auth-card animate-fade">
-          <h2 className="p-title">{isRegistering ? "Реєстрація" : "Вхід до кабінету"}</h2>
+          <div className="auth-header">
+            <div className="auth-logo">🥐</div>
+            <h2 className="auth-title">{isRegistering ? "Реєстрація" : "Вхід до кабінету"}</h2>
+            <p className="auth-subtitle">Твій солодкий світ Bakery Elite</p>
+          </div>
           <form onSubmit={handleAuth} className="p-form">
             <div className="p-input-group">
               <label>Ваш Email</label>
-              <input type="email" required onChange={(e) => setEmail(e.target.value)} />
+              <input type="email" required placeholder="example@mail.com" onChange={(e) => setEmail(e.target.value)} className="modern-input" />
             </div>
             <div className="p-input-group">
               <label>Пароль</label>
-              <input type="password" required onChange={(e) => setPassword(e.target.value)} />
+              <input type="password" required placeholder="••••••••" onChange={(e) => setPassword(e.target.value)} className="modern-input" />
             </div>
             {authError && <p className="p-msg error">{authError}</p>}
-            <button type="submit" className="p-save-btn">{isRegistering ? "Створити акаунт" : "Увійти"}</button>
+            <button type="submit" className="p-save-btn-large auth-submit-btn">{isRegistering ? "Створити акаунт" : "Увійти"}</button>
           </form>
-          <p className="p-toggle" onClick={() => setIsRegistering(!isRegistering)}>
-            {isRegistering ? "Вже є акаунт? Увійти" : "Немає аккаунту? Реєстрація"}
-          </p>
+          <div className="auth-footer">
+            <p onClick={() => setIsRegistering(!isRegistering)}>{isRegistering ? "Вже є акаунт? " : "Немає акаунту? "} <span>{isRegistering ? "Увійти" : "Реєстрація"}</span></p>
+          </div>
         </div>
       </div>
     );
@@ -189,9 +211,7 @@ const Profile = () => {
         <aside className="p-sidebar">
           <div className="p-avatar-display">{profileData.avatarUrl || '👤'}</div>
           <div className="p-user-meta">
-            <h3 className="hero-text-large" style={{fontSize: '1.3rem'}}>
-              {user.displayName || user.email.split('@')[0]}
-            </h3>
+            <h3 className="hero-text-large" style={{fontSize: '1.3rem'}}>{user.displayName || user.email.split('@')[0]}</h3>
             <p className="hero-text-sub" style={{fontSize: '0.9rem'}}>{user.email}</p>
           </div>
           <nav className="p-nav-menu">
@@ -239,11 +259,23 @@ const Profile = () => {
                     orders.map(order => (
                       <div key={order.id} className="p-order-item">
                         <div className="order-info">
-                          <h4>Торт: {order.details.flavor}</h4>
-                          <p>{order.details.weight} кг • {order.details.totalPrice} грн</p>
-                          <small>Доставка: {order.details.deliveryDate}</small>
-                          {order.status === 'pending' && !canCancel(order.details.deliveryDate) && (
-                            <div className="c-warning-text">⚠️ Термін скасування минув</div>
+                          {order.type === 'custom' ? (
+                            <>
+                              <h4>Торт: {order.details?.flavor}</h4>
+                              <p>{order.details?.weight} кг • {order.details?.totalPrice} грн</p>
+                              <small>Доставка: {order.details?.deliveryDate}</small>
+                            </>
+                          ) : (
+                            <>
+                              <h4>Замовлення №{order.id.slice(0,6)} (Каталог)</h4>
+                              <p>{order.totalAmount || order.price} грн</p>
+                              <div className="order-items-mini">
+                                {order.items?.map((item, idx) => (
+                                  <span key={idx}>{item.name}{idx !== order.items.length - 1 ? ', ' : ''}</span>
+                                ))}
+                              </div>
+                              <small>Дата: {new Date(order.createdAt).toLocaleDateString()}</small>
+                            </>
                           )}
                         </div>
                         <div className="order-status-box">
@@ -252,9 +284,9 @@ const Profile = () => {
                           </span>
                           {order.status === 'pending' && (
                             <button 
-                              className={`p-cancel-btn ${!canCancel(order.details.deliveryDate) ? 'disabled' : ''}`}
-                              onClick={() => handleCancelOrder(order.id, order.details.deliveryDate)}
-                              disabled={!canCancel(order.details.deliveryDate)}
+                              className={`p-cancel-btn ${!canCancel(order.details?.deliveryDate || order.createdAt) ? 'disabled' : ''}`}
+                              onClick={() => handleCancelOrder(order.id, order.details?.deliveryDate || order.createdAt, order.type === 'custom' ? 'custom_orders' : 'orders')}
+                              disabled={!canCancel(order.details?.deliveryDate || order.createdAt)}
                             >
                               Скасувати
                             </button>
@@ -268,7 +300,6 @@ const Profile = () => {
             </div>
           )}
 
-          {/* ВІДНОВЛЕНИЙ ТАБ НАЛАШТУВАНЬ */}
           {activeTab === 'settings' && (
             <div className="p-settings-container animate-fade">
               <div className="settings-card modern-card">
@@ -276,41 +307,21 @@ const Profile = () => {
                   <span className="settings-icon">👤</span>
                   <h4>Особисті дані</h4>
                 </div>
-                
                 <div className="settings-body">
                   <div className="p-input-group">
                     <label>Телефон</label>
-                    <input 
-                      type="tel" 
-                      value={profileData.phone} 
-                      onChange={(e) => setProfileData({...profileData, phone: e.target.value})} 
-                      placeholder="+380..." 
-                      className="modern-input"
-                    />
+                    <input type="tel" value={profileData.phone} onChange={(e) => setProfileData({...profileData, phone: e.target.value})} placeholder="+380..." className="modern-input" />
                   </div>
-
                   <div className="p-input-group">
                     <label>Стать</label>
-                    <select 
-                      value={profileData.gender} 
-                      onChange={(e) => setProfileData({...profileData, gender: e.target.value})}
-                      className="modern-select"
-                    >
+                    <select value={profileData.gender} onChange={(e) => setProfileData({...profileData, gender: e.target.value})} className="modern-select">
                       <option value="">Не вказано</option>
                       <option value="Чоловіча">Чоловіча</option>
                       <option value="Жіноча">Жіноча</option>
                     </select>
                   </div>
-
-                  <button onClick={handleUpdate} className="p-save-btn-large">
-                    Зберегти
-                  </button>
-
-                  {message.text && (
-                    <p className={`p-msg ${message.type === 'success' ? 'success' : 'error'}`}>
-                      {message.text}
-                    </p>
-                  )}
+                  <button onClick={handleUpdate} className="p-save-btn-large">Зберегти</button>
+                  {message.text && <p className={`p-msg ${message.type === 'success' ? 'success' : 'error'}`}>{message.text}</p>}
                 </div>
               </div>
             </div>
@@ -322,11 +333,7 @@ const Profile = () => {
               <div className="avatar-picker-card">
                 <div className="avatar-picker">
                   {avatarOptions.map(emoji => (
-                    <button 
-                      key={emoji} 
-                      className={`avatar-btn ${profileData.avatarUrl === emoji ? 'selected' : ''}`}
-                      onClick={() => setProfileData({...profileData, avatarUrl: emoji})}
-                    >{emoji}</button>
+                    <button key={emoji} className={`avatar-btn ${profileData.avatarUrl === emoji ? 'selected' : ''}`} onClick={() => setProfileData({...profileData, avatarUrl: emoji})}>{emoji}</button>
                   ))}
                 </div>
                 <button onClick={handleUpdate} className="p-save-btn" style={{maxWidth: '280px', margin: '30px auto 0'}}>Зберегти вибір</button>
