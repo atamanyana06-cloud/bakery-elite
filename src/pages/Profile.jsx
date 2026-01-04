@@ -35,7 +35,7 @@ const Profile = () => {
   const [authError, setAuthError] = useState('');
 
   const [profileData, setProfileData] = useState({
-    displayName: '', // Нове поле для імені
+    displayName: '',
     phone: '',
     gender: '',
     favoriteFilling: 'Шоколад',
@@ -83,6 +83,7 @@ const Profile = () => {
         const dateB = new Date(b.createdAt || b.details?.deliveryDate || 0);
         return dateB - dateA;
       });
+
       setOrders(allOrders);
     } catch (err) {
       console.error("Помилка завантаження замовлень:", err);
@@ -96,7 +97,6 @@ const Profile = () => {
     try {
       if (isRegistering) {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        // Збереження імені при реєстрації
         await updateProfile(userCredential.user, { displayName: profileData.displayName });
         await setDoc(doc(db, "users", userCredential.user.uid), {
           displayName: profileData.displayName,
@@ -115,17 +115,14 @@ const Profile = () => {
     e.preventDefault();
     setMessage({ text: '', type: '' });
     try {
-      // Оновлення в Auth
       if (profileData.displayName !== user.displayName) {
         await updateProfile(auth.currentUser, { displayName: profileData.displayName });
       }
 
-      // Оновлення в Firestore
       await setDoc(doc(db, "users", user.uid), {
         displayName: profileData.displayName,
         phone: profileData.phone,
         gender: profileData.gender,
-        favoriteFilling: profileData.favoriteFilling,
         avatarUrl: profileData.avatarUrl
       }, { merge: true });
 
@@ -159,7 +156,6 @@ const Profile = () => {
           <div className="auth-header">
             <div className="auth-logo">🥐</div>
             <h2 className="auth-title">{isRegistering ? "Реєстрація" : "Вхід до кабінету"}</h2>
-            <p className="auth-subtitle">Твій солодкий світ Bakery Elite</p>
           </div>
           <form onSubmit={handleAuth} className="p-form">
             {isRegistering && (
@@ -242,6 +238,46 @@ const Profile = () => {
             </div>
           )}
 
+          {/* ВІДНОВЛЕНО ТАБ ЗАМОВЛЕНЬ */}
+          {activeTab === 'orders' && (
+            <div className="animate-fade">
+              {ordersLoading ? <p>Завантаження...</p> : (
+                <div className="p-orders-list">
+                  {orders.length === 0 ? (
+                    <div className="p-empty-state"><p>У вас ще немає замовлень 🥐</p></div>
+                  ) : (
+                    orders.map(order => (
+                      <div key={order.id} className="p-order-item">
+                        <div className="order-info">
+                          {order.type === 'custom' ? (
+                            <>
+                              <h4>Торт: {order.details?.flavor}</h4>
+                              <p>{order.details?.weight} кг • {order.details?.totalPrice} грн</p>
+                            </>
+                          ) : (
+                            <>
+                              <h4>Замовлення №{order.id.slice(0,6)} (Каталог)</h4>
+                              <p>{order.totalAmount} грн</p>
+                              <div className="order-items-mini">
+                                {order.items?.map((item, idx) => (
+                                  <span key={idx}>{item.name} x{item.quantity}{idx !== order.items.length - 1 ? ', ' : ''}</span>
+                                ))}
+                              </div>
+                            </>
+                          )}
+                          <small>Статус: {getStatusInfo(order.status).text}</small>
+                        </div>
+                        <div className={`status-badge ${getStatusInfo(order.status).class}`}>
+                           {getStatusInfo(order.status).text}
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
           {activeTab === 'settings' && (
             <div className="p-settings-container animate-fade">
               <div className="settings-card modern-card">
@@ -271,7 +307,27 @@ const Profile = () => {
             </div>
           )}
 
-          {/* Інші таби залишаються без змін логіки */}
+         {activeTab === 'avatar' && (
+          <div className="animate-fade">
+              <div className="avatar-picker-card">
+                <div className="avatar-picker">
+                   {avatarOptions.map(emoji => (
+                     <button 
+                       key={emoji} 
+                       className={`avatar-btn ${profileData.avatarUrl === emoji ? 'selected' : ''}`} 
+                       onClick={() => setProfileData({...profileData, avatarUrl: emoji})}
+                     >
+                      {emoji}
+                     </button>
+                  ))}
+              </div>
+               {/* ОНОВЛЕНО: Переконайтеся, що клас саме p-save-btn-large */}
+              <button onClick={handleUpdate} className="p-save-btn-large">
+               Зберегти аватар
+           </button>
+         </div>
+       </div>
+     )}
         </main>
       </div>
     </div>

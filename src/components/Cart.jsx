@@ -40,13 +40,17 @@ const Cart = () => {
         items: cartItems.map(item => ({
           name: item.name,
           price: item.price,
-          quantity: item.quantity
+          quantity: item.quantity,
+          image: item.image
         })),
         totalAmount: totalPrice,
         deliveryMethod: deliveryMethod === 'pickup' ? 'Самовивіз' : 'Доставка',
         paymentMethod: paymentMethod === 'cash' ? 'Готівка' : 'Картка',
         bonusCard: bonusCard || 'Не вказано',
-        customerInfo: orderData,
+        customerInfo: {
+          ...orderData,
+          address: deliveryMethod === 'delivery' ? orderData.address : 'Самовивіз з пекарні'
+        },
         status: 'pending',
         createdAt: new Date().toISOString(),
         type: 'catalog'
@@ -70,7 +74,7 @@ const Cart = () => {
       <div className="cart-empty-container animate-fade">
         <div className="empty-content-card">
           <div className="empty-illustration">🥨</div>
-          <h2 className="empty-title">Кошик порожній</h2>
+          <h2 className="empty-title">Ваш кошик ще порожній</h2>
           <p className="empty-text">Оберіть щось смачненьке у нашому каталозі!</p>
           <Link to="/catalog" className="explore-catalog-btn">Перейти до каталогу</Link>
         </div>
@@ -80,76 +84,87 @@ const Cart = () => {
 
   return (
     <div className="cart-page animate-fade">
-      <h1 className="cart-title">Оформлення замовлення</h1>
+      <h1 className="cart-main-title">Оформлення замовлення</h1>
       
       <div className="cart-grid">
+        {/* Список товарів з великими зображеннями */}
         <section className="cart-items-section">
           <div className="section-header-modern">Ваші смаколики ({cartItems.length})</div>
           {cartItems.map((item) => (
-            <div key={item.id} className="modern-cart-item">
-              <img src={item.image} alt={item.name} />
-              <div className="item-info">
-                <h3>{item.name}</h3>
-                <p className="item-price">{item.price} грн</p>
+            <div key={item.id} className="modern-cart-item-large">
+              <div className="item-img-box">
+                <img src={item.image} alt={item.name} />
               </div>
-              <div className="qty-controls-modern">
-                <button onClick={() => addToCart(item)}>+</button>
-                <span>{item.quantity}</span>
-                <button onClick={() => removeFromCart(item.id)} className="remove-btn-small">🗑️</button>
+              <div className="item-details-box">
+                <h3>{item.name}</h3>
+                <p className="item-price-large">{item.price} грн</p>
+              </div>
+              <div className="qty-controls-pro">
+                <button onClick={() => addToCart(item)} className="qty-btn-plus">+</button>
+                <span className="qty-value">{item.quantity}</span>
+                <button onClick={() => removeFromCart(item.id)} className="remove-btn-icon">🗑️</button>
               </div>
             </div>
           ))}
         </section>
 
-        <aside className="order-form-section">
-          <form onSubmit={handleSubmit} className="checkout-form-modern">
-            <h3 className="form-subtitle">Контактні дані</h3>
-            <div className="input-modern-group">
+        {/* Форма з великими шрифтами та адресою */}
+        <aside className="order-form-section-modern">
+          <form onSubmit={handleSubmit} className="checkout-form-pro">
+            <h3 className="form-group-title">Контактні дані</h3>
+            <div className="input-pro-wrapper">
               <input type="text" placeholder="Ваше ім'я" required 
                 onChange={(e) => setOrderData({...orderData, name: e.target.value})} />
-              <input type="tel" placeholder="Телефон" required 
+              <input type="tel" placeholder="Номер телефону" required 
                 onChange={(e) => setOrderData({...orderData, phone: e.target.value})} />
             </div>
 
-            <h3 className="form-subtitle">Доставка та оплата</h3>
-            <div className="method-selector-modern">
+            <h3 className="form-group-title">Доставка та оплата</h3>
+            <div className="delivery-method-grid">
               <button type="button" className={deliveryMethod === 'pickup' ? 'active' : ''} 
                 onClick={() => setDeliveryMethod('pickup')}>Самовивіз</button>
               <button type="button" className={deliveryMethod === 'delivery' ? 'active' : ''} 
                 onClick={() => setDeliveryMethod('delivery')}>Доставка</button>
             </div>
 
-            <div className="payment-selection">
-              <div className={`pay-option ${paymentMethod === 'cash' ? 'active' : ''}`} 
+            {deliveryMethod === 'delivery' && (
+              <div className="input-pro-wrapper animate-fade">
+                <input type="text" placeholder="Адреса доставки (вул., буд., кв.)" required 
+                  onChange={(e) => setOrderData({...orderData, address: e.target.value})} />
+              </div>
+            )}
+
+            <div className="payment-grid-pro">
+              <div className={`pay-pro-option ${paymentMethod === 'cash' ? 'active' : ''}`} 
                    onClick={() => setPaymentMethod('cash')}>
                 <span>💵 Готівка</span>
               </div>
-              <div className={`pay-option ${paymentMethod === 'card' ? 'active' : ''}`} 
+              <div className={`pay-pro-option ${paymentMethod === 'card' ? 'active' : ''}`} 
                    onClick={() => setPaymentMethod('card')}>
                 <span>💳 Картка</span>
               </div>
             </div>
 
-            <div className="bonus-section-modern">
+            <div className="bonus-pro-card">
               <label>Бонусна картка BE-XXXX</label>
               <input type="text" placeholder="Введіть номер" value={bonusCard}
-                onChange={(e) => setBonusCard(e.target.value)} className="bonus-input-style" />
+                onChange={(e) => setBonusCard(e.target.value)} />
             </div>
 
-            <div className="datetime-row-modern">
+            <div className="datetime-pro-row">
               <input type="date" required min={new Date().toISOString().split('T')[0]} 
                 onChange={(e) => setOrderData({...orderData, date: e.target.value})} />
               <input type="time" required 
                 onChange={(e) => setOrderData({...orderData, time: e.target.value})} />
             </div>
 
-            <div className="cart-summary-footer">
-              <div className="total-line-modern">
+            <div className="summary-pro-footer">
+              <div className="total-pro-line">
                 <span>Всього до сплати:</span>
-                <span className="price-amount-modern">{totalPrice} грн</span>
+                <span className="final-price-value">{totalPrice} грн</span>
               </div>
-              <button type="submit" disabled={isSubmitting} className="final-order-btn-modern">
-                {isSubmitting ? "Оформлення..." : "Підтвердити замовлення"}
+              <button type="submit" disabled={isSubmitting} className="order-confirm-btn-pro">
+                {isSubmitting ? "Обробка..." : "Підтвердити замовлення"}
               </button>
             </div>
           </form>
