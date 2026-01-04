@@ -1,150 +1,115 @@
 .cart-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  /* ДОДАНО: Великий відступ зверху, щоб посунути все з-під логотипа */
-  margin-top: 130px; 
-  padding: 40px 20px;
-  background-color: #FEF9F0;
+  max-width: 1100px;
+  margin: 140px auto 60px;
+  padding: 0 20px;
+  background-color: #fdfaf5;
 }
 
 .cart-title {
   color: #5d4037;
-  font-family: 'Playfair Display', serif;
-  /* ДОДАНО: Додатковий відступ зверху для самого тексту */
-  margin-top: 20px;
-  margin-bottom: 30px;
-  border-bottom: 2px solid #FF8C00;
-  padding-bottom: 10px;
-  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 850;
+  margin-bottom: 40px;
+  text-align: left;
 }
 
 .cart-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 30px;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 40px;
 }
 
-/* Картки товарів */
+/* --- КАРТКИ ТОВАРІВ: ПРОПОРЦІЙНО --- */
 .modern-cart-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: 20px;
   background: white;
-  margin-bottom: 15px;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  border: 1px solid #eee;
+  padding: 15px 25px;
+  border-radius: 25px;
+  margin-bottom: 12px;
+  border: 1px solid #f2ede9;
+  box-shadow: 0 5px 15px rgba(93, 64, 55, 0.03);
 }
 
 .modern-cart-item img {
-  width: 120px;
-  height: 120px;
+  width: 70px;
+  height: 70px;
+  border-radius: 15px;
   object-fit: cover;
 }
 
-.item-info {
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+.item-info h3 { font-size: 0.95rem; color: #5d4037; font-weight: 750; }
+.item-price { color: #FF8C00; font-weight: 800; font-size: 1rem; }
 
-.item-price {
-  color: #FF8C00;
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-.qty-actions {
+.qty-controls-modern {
   display: flex;
   align-items: center;
-  gap: 10px;
-  /* Виправлено: зменшено величезний margin, щоб картка не розтягувалась вниз */
-  margin-top: 15px; 
+  gap: 15px;
+  background: #fff6ed;
+  padding: 5px 15px;
+  border-radius: 15px;
 }
 
-/* Форма */
+.qty-controls-modern button {
+  background: none; border: none; color: #FF8C00; font-weight: 900; cursor: pointer;
+}
+
+/* --- ФОРМА ТА ОПЛАТА --- */
 .order-form-section {
   background: white;
-  padding: 25px;
+  padding: 35px;
+  border-radius: 35px;
+  border: 1px solid #f2ede9;
+  box-shadow: 0 20px 50px rgba(93, 64, 55, 0.06);
+}
+
+.form-subtitle { font-size: 1rem; color: #5d4037; margin: 20px 0 15px; font-weight: 800; }
+
+.input-modern-group input, .bonus-input-style, .datetime-row-modern input {
+  width: 100%;
+  padding: 14px 20px;
+  margin-bottom: 12px;
+  border: 1.5px solid #eeeae6;
   border-radius: 15px;
-  border: 2px solid #5d4037;
-  height: fit-content;
+  box-sizing: border-box;
 }
 
-.checkout-form h3 { color: #5d4037; margin-bottom: 20px; }
+.payment-selection { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.pay-option {
+  padding: 12px; border: 1.5px solid #eeeae6; border-radius: 15px;
+  text-align: center; cursor: pointer; font-weight: 700; color: #a3948b; transition: 0.3s;
+}
+.pay-option.active { border-color: #FF8C00; background: #fff6ed; color: #FF8C00; }
 
-.checkout-form input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
+.bonus-section-modern {
+  background: #fdfaf5; padding: 15px; border-radius: 15px; border: 1px dashed #FF8C00; text-align: center;
+}
+.bonus-section-modern label { font-size: 0.75rem; color: #8e7d71; font-weight: 700; margin-bottom: 5px; display: block; }
+
+/* --- ПІДСУМОК (ВИПРАВЛЕНО ЦІНУ) --- */
+.total-line-modern {
+  display: flex; justify-content: space-between; align-items: center;
+  margin: 25px 0; padding-top: 15px; border-top: 1px solid #fcfaf8;
+}
+.total-line-modern span { font-size: 1rem; font-weight: 700; color: #5d4037; }
+.price-amount-modern { font-size: 1.4rem; color: #FF8C00; font-weight: 900; }
+
+.final-order-btn-modern {
+  width: 100%; height: 55px; background: #FF8C00; color: white;
+  border: none; border-radius: 18px; font-weight: 850; cursor: pointer;
+  box-shadow: 0 10px 20px rgba(255, 140, 0, 0.2);
 }
 
-.method-selector {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+/* ПОРОЖНІЙ КОШИК */
+.cart-empty-container { padding-top: 220px; text-align: center; }
+.empty-content-card { background: white; padding: 50px; border-radius: 40px; display: inline-block; box-shadow: 0 20px 40px rgba(0,0,0,0.03); }
+.empty-illustration { font-size: 4rem; margin-bottom: 20px; }
+.explore-catalog-btn {
+  display: inline-block; background: #FF8C00; color: white; padding: 15px 35px;
+  border-radius: 25px; text-decoration: none; font-weight: 800; margin-top: 20px;
 }
-
-.method-selector button {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #5d4037;
-  background: transparent;
-  cursor: pointer;
-  border-radius: 8px;
-  font-weight: bold;
-}
-
-.method-selector button.active {
-  background: #5d4037;
-  color: white;
-}
-
-.datetime-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.datetime-row label {
-  font-size: 0.85rem;
-  color: #5d4037;
-  font-weight: bold;
-}
-
-.cart-total-footer {
-  border-top: 2px dashed #eee;
-  padding-top: 20px;
-}
-
-.total-line {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.3rem;
-  font-weight: 800;
-  margin-bottom: 20px;
-}
-
-.price-amount { color: #FF8C00; }
-
-.final-order-btn {
-  width: 100%;
-  background: #FF8C00;
-  color: white;
-  border: none;
-  padding: 15px;
-  border-radius: 30px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.final-order-btn:hover { background: #5d4037; }
 
 /* Адаптивність */
 @media (max-width: 850px) {

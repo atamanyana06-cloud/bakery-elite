@@ -23,11 +23,22 @@ export const CartProvider = ({ children }) => {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
+  /* --- НОВЕ: Функція повного очищення кошика --- */
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   // Рахуємо загальну кількість штук для баджа в хедері
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, cartCount }}>
+    <CartContext.Provider value={{ 
+      cartItems, 
+      addToCart, 
+      removeFromCart, 
+      clearCart, // Експортуємо нову функцію
+      cartCount 
+    }}>
       {children}
     </CartContext.Provider>
   );
