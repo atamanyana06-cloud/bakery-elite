@@ -222,15 +222,106 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- 7. АДАПТИВНІСТЬ --- */
-@media (max-width: 768px) {
+/* --- 7. РОЗШИРЕНА АДАПТИВНІСТЬ --- */
+
+/* Планшети (до 1024px) */
+@media (max-width: 1024px) {
   .catalog-container {
-    margin-top: 110px;
-  }
-  .catalog-title {
-    font-size: 2rem;
+    padding: 30px 15px;
   }
   .product-grid {
+    gap: 25px; /* Трохи зменшуємо відстань між картками */
+  }
+}
+
+/* Малі планшети та великі телефони (до 768px) */
+@media (max-width: 768px) {
+  .catalog-container {
+    margin-top: 140px; /* Коригуємо під мобільний хедер */
+  }
+  
+  .catalog-title {
+    font-size: 2.2rem;
+  }
+
+  .filter-buttons {
+    gap: 8px;
+    margin-bottom: 40px;
+  }
+
+  .filter-buttons button {
+    padding: 10px 20px;
+    font-size: 0.85rem;
+    flex: 1 1 auto; /* Кнопки розтягуються, щоб заповнити рядок */
+    min-width: 120px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 20px;
+  }
+}
+
+/* Мобільні телефони (до 480px) */
+@media (max-width: 480px) {
+  .catalog-container {
+    margin-top: 120px;
+    padding: 20px 15px;
+  }
+
+  .catalog-subtitle {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+  }
+
+  .catalog-title {
+    font-size: 1.8rem;
+  }
+
+  /* Робимо сітку в одну колонку для максимального фокусу на товарі */
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .product-image-wrapper {
+    height: 200px; /* Зменшуємо висоту фото для економії місця */
+  }
+
+  .product-info {
+    padding: 20px;
+  }
+
+  .product-card h3 {
+    font-size: 1.15rem;
+  }
+
+  /* Збільшуємо зону натискання кнопки для зручності */
+  .add-to-cart-btn {
+    padding: 12px 20px;
+    width: 100%; /* На мобільних кнопка на всю ширину виглядає краще */
+    justify-content: center;
+    margin-top: 15px;
+  }
+
+  .product-footer {
+    flex-direction: column; /* Ціна зверху, кнопка знизу */
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .product-card .price {
+    font-size: 1.4rem;
+  }
+}
+
+/* Оптимізація для дуже малих екранів (iPhone SE і подібні) */
+@media (max-width: 360px) {
+  .catalog-title {
+    font-size: 1.5rem;
+  }
+  .filter-buttons button {
+    font-size: 0.8rem;
+    padding: 8px 15px;
   }
 }

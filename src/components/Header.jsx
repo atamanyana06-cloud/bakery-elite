@@ -5,15 +5,13 @@ import '../styles/Header.css';
 
 function Header() {
   const { cartCount } = useCart();
-  const location = useLocation(); // Потрібно для підсвічування активного пункту
+  const location = useLocation();
 
-  // Ліва частина меню
   const leftMenu = [
     { id: 1, name: 'Головна', path: '/' },
     { id: 2, name: 'Каталог', path: '/catalog' }
   ];
 
-  // Права частина меню (Шлях змінено на /constructor)
   const rightMenu = [
     { id: 3, name: 'Конструктор торта', path: '/constructor' },
     { id: 4, name: 'Профіль', path: '/profile' }
@@ -54,10 +52,7 @@ function Header() {
                 className={location.pathname === item.path ? 'active' : ''}
               >
                 {item.name}
-                {/* Відображаємо кількість товарів біля іконки профілю або як окремий індикатор */}
-                {item.name === 'Профіль' && cartCount > 0 && (
-                  <span className="cart-badge-mini">{cartCount}</span>
-                )}
+                {/* ЦИФРУ ВИДАЛЕНО ЗВІДСИ */}
               </Link>
             </li>
           ))}

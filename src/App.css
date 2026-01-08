@@ -1,3 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box !important;
+}
+
+html, body {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important; /* Забороняє будь-який скрол вбік */
+  position: relative;
+}
+
+#root {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 /* 1. Глобальне скидання 🧹 */
 * {
   margin: 0;
@@ -203,19 +225,85 @@ body, html {
   line-height: 1.8;
 }
 
-/* Мобільна адаптація */
+/* --- АДАПТИВНІСТЬ ГРАНДІОЗНОЇ ІСТОРІЇ (Таймлайн) --- */
+
+/* 1. Планшети (до 1024px) - Ваша база + покращення */
 @media (max-width: 1024px) {
-  .vertical-line { left: 40px; }
-  .history-row, .history-row.right { flex-direction: column; align-items: flex-start; margin-bottom: 80px; }
-  .history-image-box, .history-content-box { width: 90%; margin-left: 80px; }
-  .history-content-box { padding: 30px 0; }
-  .node-marker { left: -51px !important; }
+  .grand-history {
+    padding: 80px 0;
+  }
+  .history-header .main-title {
+    font-size: 2.8rem;
+  }
+  .vertical-line { 
+    left: 30px; /* Зміщуємо лінію вбік */
+    transform: none;
+  }
+  .history-row, .history-row.right { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    margin-bottom: 60px; 
+    padding-left: 70px; /* Відступ для лінії */
+  }
+  .history-image-box, .history-content-box { 
+    width: 100%; 
+    margin-left: 0; 
+  }
+  .history-image-box img {
+    height: 300px; /* Зменшуємо висоту фото */
+  }
+  .node-marker { 
+    left: -51px !important; 
+    top: 0;
+  }
+  .year-badge {
+    font-size: 1.2rem;
+    padding: 8px 20px;
+    top: 20px;
+    right: 20px;
+  }
+  .history-row.right .year-badge {
+    left: auto;
+    right: 20px;
+  }
 }
 
-.event-node:hover .dot-inner {
-  transform: scale(1.4);
+/* --- ДОПОВНЕННЯ ДО ТВОГО КОДУ --- */
+
+/* Корекція секції CTA для мобільних */
+@media (max-width: 600px) {
+  .cta-title {
+    font-size: 2rem; /* Зменшуємо, щоб влізло на iPhone SE */
+    line-height: 1.2;
+  }
+  
+  .cta-text {
+    font-size: 1rem;
+    margin-bottom: 25px;
+  }
+
+  .cta-button {
+    width: 100%; /* На смартфонах кнопка на всю ширину зручніша для тапу */
+    padding: 18px 20px;
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  .catalog-cta {
+    padding: 60px 20px; /* Менше порожнього простору */
+  }
 }
-/* Решта ваших стилів для карток та логотипів (можна залишити без змін) */
-.card {
-  padding: 2em;
+
+/* Корекція блоків історії для дуже малих екранів */
+@media (max-width: 380px) {
+  .history-content-box h3 {
+    font-size: 1.4rem;
+  }
+  
+  .year-badge {
+    top: 15px;
+    right: 15px;
+    font-size: 1.1rem;
+    padding: 6px 15px;
+  }
 }

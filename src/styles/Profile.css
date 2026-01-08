@@ -400,13 +400,124 @@
 .animate-fade { animation: fadeIn 0.5s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-/* --- АДАПТИВНІСТЬ --- */
-@media (max-width: 1000px) {
-  .p-card { grid-template-columns: 1fr; }
-  .p-sidebar { border-right: none; border-bottom: 1px solid #f5f0eb; }
+/* ==========================================================
+   ФІКСАЦІЯ БАЗОВОЇ СТРУКТУРИ (Додайте це ПЕРЕД медіа-запитами)
+   ========================================================== */
+.p-wrapper {
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important; /* Запобігає горизонтальному скролу */
 }
 
-@media (max-width: 600px) {
-  .p-order-item { flex-direction: column; align-items: flex-start; gap: 20px; }
-  .order-status-box { flex-direction: row; justify-content: space-between; width: 100%; align-items: center; border-top: 1px solid #f5f0eb; padding-top: 15px; }
+.p-card {
+    display: grid;
+    /* Базовий стан для десктопа */
+    grid-template-columns: 320px 1fr;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ==========================================================
+   РОЗШИРЕНА АДАПТИВНІСТЬ
+   ========================================================== */
+
+/* 1. Планшети та ноутбуки (до 1100px) */
+@media (max-width: 1100px) {
+  .p-wrapper {
+    padding: 140px 15px 60px !important;
+  }
+  .p-card {
+    max-width: 100% !important;
+    grid-template-columns: 260px 1fr !important;
+    margin: 0 auto;
+  }
+}
+
+/* 2. Середні екрани (до 950px) - Перехід у вертикальний режим */
+@media (max-width: 950px) {
+  .p-card {
+    grid-template-columns: 1fr !important; /* Одна колонка */
+    display: block !important; /* Змінюємо grid на block для надійності */
+    border-radius: 20px !important;
+  }
+
+  .p-sidebar {
+    width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px solid #f5f0eb !important;
+    padding: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .p-nav-menu {
+    display: flex !important;
+    flex-direction: row !important; /* Горизонтальне меню на планшеті */
+    overflow-x: auto !important; /* Скрол меню пальцем */
+    width: 100% !important;
+    gap: 10px !important;
+    padding: 10px 5px !important;
+    justify-content: flex-start !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .p-nav-menu button {
+    flex: 0 0 auto !important; /* Не даємо кнопкам стискатися */
+    white-space: nowrap !important;
+  }
+}
+
+/* 3. Мобільні телефони (до 650px) */
+@media (max-width: 650px) {
+  .p-wrapper {
+    padding: 100px 10px 30px !important;
+  }
+
+  .p-main-content {
+    padding: 20px 15px !important;
+  }
+
+  .p-barcode-card {
+    padding: 20px !important;
+    border-radius: 25px !important;
+  }
+
+  .p-card-body h1 {
+    font-size: 1.8rem !important; /* Зменшуємо цифру бонусів */
+  }
+
+  /* Замовлення стають вертикальними картками */
+  .p-order-item {
+    flex-direction: column !important;
+    gap: 12px !important;
+    padding: 15px !important;
+  }
+
+  .order-status-box {
+    width: 100% !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    border-top: 1px solid #f0ebe6 !important;
+    padding-top: 10px !important;
+  }
+}
+
+/* 4. Малі пристрої (до 480px) */
+@media (max-width: 480px) {
+  .p-avatar-display {
+    width: 80px !important;
+    height: 80px !important;
+    font-size: 2rem !important;
+  }
+
+  .avatar-picker {
+    grid-template-columns: repeat(3, 1fr) !important; /* 3 аватари в ряд */
+    gap: 10px !important;
+  }
+
+  .modern-card {
+    padding: 15px !important;
+  }
 }

@@ -157,7 +157,88 @@
 }
 
 /* Адаптивність */
-@media (max-width: 850px) {
-  .cart-grid { grid-template-columns: 1fr; }
-  .cart-page { margin-top: 120px; } /* На мобільних зазвичай потрібно ще більше місця */
+/* 1. Планшети та малі екрани (до 1100px) */
+@media (max-width: 1100px) {
+  .cart-grid {
+    gap: 30px;
+    grid-template-columns: 1.2fr 1fr;
+  }
+  .order-form-section-modern {
+    padding: 30px;
+  }
+}
+
+/* 2. Перехід до однієї колонки (до 950px) */
+@media (max-width: 950px) {
+  .cart-page {
+    margin-top: 140px;
+    padding: 0 20px;
+  }
+  .cart-grid {
+    grid-template-columns: 1fr; /* Одна колонка */
+  }
+  .cart-main-title {
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .order-form-section-modern {
+    max-width: 600px;
+    margin: 0 auto; /* Центрування форми під списком товарів */
+  }
+}
+
+/* 3. Мобільні телефони (до 600px) */
+@media (max-width: 600px) {
+  .cart-page {
+    margin-top: 100px;
+  }
+  
+  /* Перебудова картки товару у вертикальну */
+  .modern-cart-item-large {
+    grid-template-columns: 1fr; /* Все в один стовпчик */
+    text-align: center;
+    padding: 20px;
+    gap: 15px;
+  }
+  
+  .item-img-box {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .qty-controls-pro {
+    justify-content: center;
+    width: fit-content;
+    margin: 0 auto;
+  }
+
+  /* Адаптація сіток вибору оплати та доставки */
+  .delivery-method-grid, .payment-grid-pro {
+    grid-template-columns: 1fr; /* Кожна опція на весь рядок */
+  }
+  
+  .input-pro-wrapper input, .bonus-pro-card input, .datetime-pro-row input {
+    height: 55px; /* Трохи менша висота для мобільних */
+    font-size: 1rem;
+  }
+  
+  .final-price-value {
+    font-size: 1.5rem;
+  }
+  
+  .order-confirm-btn-pro {
+    height: 60px;
+    font-size: 1.1rem;
+  }
+}
+
+/* 4. Дуже малі екрани (до 400px) */
+@media (max-width: 400px) {
+  .cart-main-title {
+    font-size: 1.8rem;
+  }
+  .empty-content-card {
+    padding: 30px 15px;
+  }
 }

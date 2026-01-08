@@ -206,8 +206,126 @@
 .prev { left: -70px; }
 .next { right: -70px; }
 
-/* Адаптація для мобільних */
-@media (max-width: 1200px) {
-  .prev { left: 10px; }
-  .next { right: 10px; }
+/* ==========================================================
+   РОЗШИРЕНА АДАПТИВНІСТЬ ДЛЯ СЛАЙДЕРА
+   ========================================================== */
+
+/* 1. Планшети (до 1024px) */
+@media (max-width: 1024px) {
+  .modern-slider-section {
+    padding-top: 140px; /* Менший відступ під хедер */
+  }
+  .slider-wrapper {
+    max-width: 90%;
+  }
+  .slide-hero-title {
+    font-size: 2.8rem;
+  }
+  .prev { left: -20px; }
+  .next { right: -20px; }
+}
+
+/* 2. Малі планшети (до 768px) */
+@media (max-width: 768px) {
+  .modern-slider-section {
+    padding-top: 120px;
+  }
+  
+  .slide-face {
+    padding: 40px 25px;
+    border-radius: 30px;
+  }
+
+  .slide-badge {
+    top: 20px;
+    right: 20px;
+    font-size: 0.6rem;
+  }
+
+  .slide-hero-title {
+    font-size: 2.2rem;
+  }
+
+  .emoji-icon {
+    font-size: 2.2rem;
+  }
+
+  .slide-hero-desc {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+
+  .slide-actions {
+    flex-direction: column; /* Кнопки одна під одною */
+    width: 100%;
+    gap: 10px;
+  }
+
+  .primary-cta, .secondary-info {
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+  }
+
+  /* Ховаємо бокові стрілки, замінюючи їх на пагінацію */
+  .nav-arrow {
+    display: none;
+  }
+}
+
+/* 3. Мобільні телефони (до 480px) */
+@media (max-width: 480px) {
+  .modern-slider-section {
+    padding: 100px 15px 40px;
+  }
+
+  .slider-card-system {
+    min-height: 400px;
+  }
+
+  .slide-hero-title {
+    font-size: 1.8rem;
+    line-height: 1.2;
+  }
+
+  .back-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .back-content p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .modern-pagination {
+    bottom: 20px;
+  }
+
+  .pag-bar {
+    width: 20px;
+  }
+
+  .pag-bar.active {
+    width: 40px;
+  }
+
+  .close-icon {
+    top: 15px;
+    right: 15px;
+    width: 38px;
+    height: 38px;
+  }
+}
+
+/* Оптимізація для низьких екранів (ландшафт) */
+@media (max-height: 600px) and (orientation: landscape) {
+  .modern-slider-section {
+    padding-top: 80px;
+  }
+  .slider-card-system {
+    min-height: 300px;
+  }
+  .slide-hero-desc {
+    display: none; /* Ховаємо опис, щоб влізли кнопки */
+  }
 }

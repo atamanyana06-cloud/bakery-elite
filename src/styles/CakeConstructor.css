@@ -141,6 +141,60 @@
 .c-lock-icon { font-size: 4rem; display: block; margin-bottom: 20px; }
 .c-auth-btn { margin-top: 25px; padding: 14px 30px; background: #5d4037; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
 
+/* Планшети (до 1024px) */
+@media (max-width: 1024px) {
+  .c-main-layout {
+    gap: 30px;
+    grid-template-columns: 300px 1fr;
+  }
+  .c-glass-container {
+    padding: 30px;
+  }
+}
+
+/* Малі планшети / Горизонтальні телефони (до 850px) */
+@media (max-width: 850px) {
+  .c-page {
+    padding-top: 120px; /* Зменшуємо відступ зверху */
+  }
+  .c-main-layout {
+    grid-template-columns: 1fr; /* Перехід в одну колонку */
+  }
+  .c-left-panel {
+    order: -1; /* Візуалізатор торта тепер зверху форми */
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .c-intro h1 {
+    font-size: 1.8rem;
+  }
+}
+
+/* Мобільні телефони (до 500px) */
+@media (max-width: 500px) {
+  .c-page {
+    padding: 100px 10px 40px;
+  }
+  .c-glass-container {
+    padding: 20px;
+    border-radius: 20px;
+  }
+  .c-row {
+    grid-template-columns: 1fr; /* Поля форми стають одне під одним */
+    gap: 0;
+  }
+  .price-amount {
+    font-size: 2.2rem;
+  }
+  .c-intro h1 {
+    font-size: 1.5rem;
+  }
+  .c-submit-btn {
+    padding: 15px;
+    font-size: 1rem;
+  }
+}
+
 @media (max-width: 900px) {
   .c-main-layout { grid-template-columns: 1fr; }
 }

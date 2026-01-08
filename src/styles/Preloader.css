@@ -95,3 +95,52 @@
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
+/* Планшети (до 768px) */
+@media (max-width: 768px) {
+  .loader-title {
+    font-size: 2.2rem; /* Зменшуємо головний заголовок */
+  }
+  .loader-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+  }
+  .cake-container {
+    transform: scale(0.9); /* Масштабуємо весь торт разом */
+  }
+}
+
+/* Мобільні телефони (до 480px) */
+@media (max-width: 480px) {
+  .loader-title {
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+  }
+  .loader-subtitle {
+    font-size: 0.8rem;
+  }
+  
+  /* Коригуємо розміри торта, щоб він вписався в малий екран */
+  .cake-container {
+    transform: scale(0.75);
+    height: 180px;
+  }
+
+  /* Якщо потрібно, можна трохи змінити ширину шарів для вузьких екранів */
+  .layer-1 { width: 150px; }
+  .layer-2 { width: 110px; }
+  .layer-3 { width: 80px; }
+}
+
+/* Дуже малі екрани або ландшафтна орієнтація (мала висота) */
+@media (max-height: 500px) {
+  .loader-content {
+    display: flex;
+    flex-direction: row; /* Текст і торт стають поруч, якщо екран низький */
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+  }
+  .loader-title { font-size: 1.5rem; }
+  .cake-container { transform: scale(0.6); margin: 0; }
+  .loader-subtitle { margin-bottom: 0; }
+}
